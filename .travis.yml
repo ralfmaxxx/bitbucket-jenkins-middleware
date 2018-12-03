@@ -1,0 +1,27 @@
+sudo: false
+
+language: php
+
+env:
+    global:
+    - secure: 'tgiwcHgHHV0mYAyxfgXal3dYvb/dYhnno1PWIBgMZBo1xIc3HHVV0YJXNGqvWjOXrrYbUGOgqqrOau9JuRnvADdqkMJLagmqefg+nfAxn9+Li9+i+OEj84UiUj3OmzEcrm6r6HeMcBGwfycfEJllkfptvpfX9ydnBo6J4vSNMWKZVo/CLqFjdeI955PIYmUd2ekRHcF5+nmy/VstO1ayIGPxMsDNBD5LJZsJTbu6hhWc7MVWaqj9ac+HnRmiCF5K0c4bKQGofBItJhwsXCY8gCbw9A81jAs0l5KzkeVO/1pZV2n1hQigf3vsyasfHR2RXH+Swt6kCZQN3eqAjnun0zyIn0ZQT99EcnvlfeIP4QDhk2RImqZmEEGvb+52ujVknXGGCGeQbMgYEJbGQ441P30bjXFS4DKSs+RIR92JEDvEtqz3zATMWkssdq1G5xsZ4Yv9pXoHn7q9ULNg7w8YKUXK8YgfJGTPyCTKbGZtNcYkK1zfhzTDOGjnljEGArFYJxTAikOZIjfiGlL/U1BOkosnOTU6w46tvhWgKQ8xjpXwZBbV241hezTmwUpSL0nH+NEViuBmZonjik/wm+dVCbshy3QqP+8T2qi38IEt9xdWWfo5OxoIZKv5l9qsDzFLxzhuyUtoOkmrChgCcG3JAytb/H2SBGqqsDeYDMmNiQE=' # GITHUB_OAUTH_TOKEN
+
+cache:
+    directories:
+    - bin # composer
+    - vendor # composer
+
+php:
+
+- '7.1'
+- '7.2'
+
+before_install:
+- composer self-update
+- composer config github-oauth.github.com $GITHUB_OAUTH_TOKEN
+
+install:
+- composer install --no-interaction
+
+script:
+- bin/phing

@@ -1,0 +1,7 @@
+mapper:
+    -
+        bitbucket:
+            repository_name: 'name'
+        jenkins:
+            url_job_pattern: 'url'
+            commit_parameter: '{COMMIT}'
