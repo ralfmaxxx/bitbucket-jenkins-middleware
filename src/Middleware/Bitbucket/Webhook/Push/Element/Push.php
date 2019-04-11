@@ -31,4 +31,9 @@ final class Push
     {
         return $this->commits;
     }
+
+    public function getLastCommit() : ?Commit
+    {
+        return $this->commits[0] ?? null;
+    }
 }

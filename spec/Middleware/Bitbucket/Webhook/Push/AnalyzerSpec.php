@@ -70,7 +70,36 @@ class AnalyzerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(AnalyzerInterface::class);
     }
 
-    public function it_returns_an_empty_list_of_commits_if_push_webook_does_not_contain_them(
+	public function it_returns_a_list_of_commits_from_push_webhook(
+		RequestInterface $request,
+		StreamInterface $stream
+	) : void {
+
+		$request
+			->getBody()
+			->willReturn($stream);
+
+		$stream
+			->getContents()
+			->willReturn(self::WEBHOOK_PAYLOAD);
+
+		$expectedCommits = [
+			new Commit(self::FIRST_HASH),
+			new Commit(self::SECOND_HASH),
+			new Commit(self::THIRD_HASH),
+		];
+
+		$this
+			->analyze($request)
+			->shouldBeLike(
+				new Push(
+					new Repository(self::REPOSITORY_NAME),
+					$expectedCommits
+				)
+			);
+	}
+
+	public function it_returns_an_empty_list_of_commits_if_push_webook_does_not_contain_them(
         RequestInterface $request,
         StreamInterface $stream
     ) : void {
@@ -89,35 +118,6 @@ class AnalyzerSpec extends ObjectBehavior
                 new Push(
                     new Repository(self::REPOSITORY_NAME),
                     []
-                )
-            );
-    }
-
-    public function it_returns_a_list_of_commits_from_push_webhook(
-        RequestInterface $request,
-        StreamInterface $stream
-    ) : void {
-
-        $request
-            ->getBody()
-            ->willReturn($stream);
-
-        $stream
-            ->getContents()
-            ->willReturn(self::WEBHOOK_PAYLOAD);
-
-        $expectedCommits = [
-            new Commit(self::FIRST_HASH),
-            new Commit(self::SECOND_HASH),
-            new Commit(self::THIRD_HASH),
-        ];
-
-        $this
-            ->analyze($request)
-            ->shouldBeLike(
-                new Push(
-                    new Repository(self::REPOSITORY_NAME),
-                    $expectedCommits
                 )
             );
     }

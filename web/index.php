@@ -25,11 +25,11 @@ $push = $analyzer->analyze($psrRequest);
 
 foreach ($configuration->get() as $integration) {
     if ($push->getRepository()->contains($integration['bitbucket']['repository_name'])) {
-		foreach ($push->getCommits() as $pushCommit) {
-			$notifier->notify(
-				new Url($integration['jenkins']['url_job_pattern'], new JenkinsCommit($integration['jenkins']['commit_parameter'], $pushCommit->getHash()))
-			);
-    	}
+        $lastCommit = $push->getLastCommit();
+        if (!is_null($lastCommit)) {
+            $notifier->notify(
+                new Url($integration['jenkins']['url_job_pattern'], new JenkinsCommit($integration['jenkins']['commit_parameter'], $pushCommit->getHash()))
+            );
+        }
     }
 }
-
