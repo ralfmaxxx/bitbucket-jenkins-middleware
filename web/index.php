@@ -28,7 +28,7 @@ foreach ($configuration->get() as $integration) {
         $lastCommit = $push->getLastCommit();
         if (!is_null($lastCommit)) {
             $notifier->notify(
-                new Url($integration['jenkins']['url_job_pattern'], new JenkinsCommit($integration['jenkins']['commit_parameter'], $pushCommit->getHash()))
+                new Url($integration['jenkins']['url_job_pattern'], new JenkinsCommit($integration['jenkins']['commit_parameter'], $lastCommit->getHash()))
             );
         }
     }
